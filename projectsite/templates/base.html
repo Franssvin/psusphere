@@ -12,13 +12,87 @@
 		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 	<link rel="stylesheet" href="{% static 'css/ready.css' %}">
 	<link rel="stylesheet" href="{% static 'css/demo.css' %}">
+	<style>
+		:root {
+			/* primary teal -> deep blue */
+			--primary-color: #00bfa6;
+			--primary-gradient: linear-gradient(135deg, #00bfa6 0%, #006d77 100%);
+			--secondary-gradient: linear-gradient(135deg, #ff6b6b 0%, #f8c2c2 100%);
+			--accent-color: #ff6b6b;
+			--light-bg: #e0f7fa;
+		}
+		body {
+			/* subtle radial gradient with light texture */
+			background: radial-gradient(circle at top left, #e0f7fa 0%, #006d77 100%),
+			    repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 20px);
+			min-height: 100vh;
+			font-family: 'Nunito', sans-serif;
+			color: #333;
+		}
+		.main-panel {
+			background: transparent;
+		}
+		.page-title {
+			font-size: 2.5rem;
+			font-weight: 800;
+			color: white;
+			letter-spacing: -0.5px;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+		.page-subtitle {
+			font-size: 1rem;
+			font-weight: 400;
+			color: rgba(255, 255, 255, 0.9);
+			letter-spacing: 0.5px;
+		}
+		.page-header {
+			background: var(--primary-gradient);
+			padding: 50px 30px;
+			border-radius: 15px;
+			margin-bottom: 40px;
+			box-shadow: 0 8px 25px rgba(0, 191, 166, 0.2);
+		}
+		/* navbar and sidebar colors */
+		.main-header, .logo-header {
+			background: var(--primary-gradient);
+		}
+		.logo-header .logo {
+			color: white !important;
+			font-weight: 700;
+			font-size: 1.2rem;
+		}
+		.navbar-nav .nav-link {
+			color: white !important;
+		}
+		.navbar-nav .nav-link:hover {
+			color: var(--accent-color) !important;
+		}
+		.sidebar {
+			background: rgba(0, 109, 119, 0.95);
+		}
+		.sidebar-wrapper .nav li a {
+			color: white !important;
+		}
+		.sidebar-wrapper .nav li a:hover {
+			background: rgba(0, 191, 166,0.2) !important;
+		}
+		/* button theming */
+		.btn-primary {
+			background: var(--primary-gradient) !important;
+			border: none !important;
+		}
+		.btn-primary:hover {
+			background: var(--primary-gradient) !important;
+			opacity: 0.9;
+		}
+	</style>
 </head>
 
 <body>
 	<div class="wrapper">
 		<div class="main-header">
 			<div class="logo-header">
-				<a href="dashboard.html" class="logo">
+				<a href="{% url 'index' %}" class="logo">
 					PSUSphere Dashboard
 				</a>
 				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
@@ -30,38 +104,31 @@
 			<nav class="navbar navbar-header navbar-expand-lg">
 				<div class="container-fluid">
 
-					<form class="navbar-left navbar-form nav-search mr-md-3" action="">
+					<form class="navbar-left navbar-form nav-search mr-md-3" action="{% url 'organization-list' %}" method="get">
 						<div class="input-group">
-							<input type="text" placeholder="Search ..." class="form-control">
+							<input type="text" name="q" placeholder="Search ..." class="form-control">
 							<div class="input-group-append">
-								<span class="input-group-text">
+								<button class="input-group-text" type="submit">
 									<i class="la la-search search-icon"></i>
-								</span>
+								</button>
 							</div>
 						</div>
 					</form>
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
-						<li class="nav-item dropdown hidden-caret">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="la la-envelope"></i>
-							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="#">Action</a>
-								<a class="dropdown-item" href="#">Another action</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#">Something else here</a>
-							</div>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'inbox' %}" title="Inbox">
+							<i class="la la-envelope"></i>
+						</a>
 						</li>
 						<li class="nav-item dropdown hidden-caret">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+<a class="nav-link dropdown-toggle" href="{% url 'notifications' %}" id="navbarDropdown" role="button"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<i class="la la-bell"></i>
 								<span class="notification">3</span>
 							</a>
 							<ul class="dropdown-menu notif-box" aria-labelledby="navbarDropdown">
 								<li>
-									<div class="dropdown-title">You have 4 new notification</div>
+									<div class="dropdown-title">You have 4 new notifications</div>
 								</li>
 								<li>
 									<div class="notif-center">
@@ -106,7 +173,7 @@
 									</div>
 								</li>
 								<li>
-									<a class="see-all" href="javascript:void(0);"> <strong>See all
+									<a class="see-all" href="{% url 'notifications' %}"> <strong>See all
 											notifications</strong> <i class="la la-angle-right"></i> </a>
 								</li>
 							</ul>
@@ -116,7 +183,7 @@
 								aria-expanded="false">
 								    <img src="{% static 'img/Admin.jpg' %}" alt="user-img"
 									    width="36" class="img-circle">
-								<span>Admin</span></span>
+								<span>Admin</span>
 							</a>
 							<ul class="dropdown-menu dropdown-user">
 								<li>
@@ -125,18 +192,18 @@
 												<img src="{% static 'img/Admin.jpg' %}" alt="user">
 											</div>
 											<div class="u-text">
-												<h4>Admin</h4>
+												<h4>Administrator</h4>
 												<p class="text-muted">admin@gmail.com</p>
-												<a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
+												<a href="{% url 'profile' %}" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
 											</div>
 									</div>
 								</li>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#"><i class="ti-user"></i> My Profile</a>
-								<a class="dropdown-item" href="#"></i> My Balance</a>
-								<a class="dropdown-item" href="#"><i class="ti-email"></i> Inbox</a>
+								<a class="dropdown-item" href="{% url 'profile' %}"><i class="ti-user"></i> My Profile</a>
+								<a class="dropdown-item" href="{% url 'balance' %}"><i class="ti-credit-card"></i> My Balance</a>
+								<a class="dropdown-item" href="{% url 'inbox' %}"><i class="ti-email"></i> Inbox</a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#"><i class="ti-settings"></i> Account Setting</a>
+								<a class="dropdown-item" href="{% url 'settings' %}"><i class="ti-settings"></i> Account Setting</a>
 								<div class="dropdown-divider"></div>
 								<form method="post" class="dropdown-item" action="{% url 'logout' %}">
 									{% csrf_token %}
@@ -154,38 +221,12 @@
 				<div class="user">
 					<div class="photo">
 						<img src="{% static "img\Admin.jpg" %}" alt="Profile Image">
-
 					</div>
 					<div class="info">
-						<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-							<span>
-								Admin
-
-								<span class="user-level">Administrator</span>
-								<span class="caret"></span>
-							</span>
-						</a>
+						<span>
+							Administrator
+						</span>
 						<div class="clearfix"></div>
-
-						<div class="collapse in" id="collapseExample" aria-expanded="true" style="">
-							<ul class="nav">
-								<li>
-									<a href="#profile">
-										<span class="link-collapse">My Profile</span>
-									</a>
-								</li>
-								<li>
-									<a href="#edit">
-										<span class="link-collapse">Edit Profile</span>
-									</a>
-								</li>
-								<li>
-									<a href="#settings">
-										<span class="link-collapse">Settings</span>
-									</a>
-								</li>
-							</ul>
-						</div>
 					</div>
 				</div>
 				<ul class="nav">
@@ -255,7 +296,7 @@
 				</nav>
 				<div class="copyright ml-auto">
 					2018, made with <i class="la la-heart heart text-danger"></i> by <a
-						href="http://www.themekita.com">ThemeKita</a>
+						href="http://www.themekita.com">ThemeKita</a> 
 				</div>
 			</div>
 		</footer>

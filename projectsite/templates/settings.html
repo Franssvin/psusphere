@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Settings - PSUSphere{% endblock %}
+{% block content %}
+<style>
+    .settings-section {
+        padding: 30px 0;
+    }
+    .settings-card {
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        margin-bottom: 25px;
+        background: white;
+        border: none;
+        overflow: hidden;
+    }
+    .setting-section-title {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 20px 30px;
+        border-radius: 12px 12px 0 0;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: 0.3px;
+        display: flex;
+        align-items: center;
+    }
+    .setting-section-title i {
+        margin-right: 12px;
+        font-size: 1.2rem;
+    }
+    .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 25px 30px;
+        border-bottom: 1px solid #f0f0f0;
+        transition: all 0.3s ease;
+    }
+    .setting-item:hover {
+        background-color: #f8f9fc;
+    }
+    .setting-item:last-child {
+        border-bottom: none;
+    }
+    .setting-label {
+        font-weight: 600;
+        color: #333;
+        font-size: 1rem;
+    }
+    .setting-description {
+        font-size: 0.85rem;
+        color: #999;
+        margin-top: 4px;
+    }
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 56px;
+        height: 28px;
+        background-color: #ddd;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        flex-shrink: 0;
+    }
+    .toggle-switch.active {
+        background: var(--primary-gradient);
+        box-shadow: 0 4px 12px rgba(0, 191, 166, 0.3);
+    }
+    .toggle-slider {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 24px;
+        height: 24px;
+        background-color: white;
+        border-radius: 50%;
+        transition: all 0.4s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .toggle-switch.active .toggle-slider {
+        left: 30px;
+    }
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e8e8e8 !important;
+        transition: all 0.3s ease !important;
+    }
+    .form-control:focus {
+        border-color: var(--primary-color) !important;
+        box-shadow: 0 0 0 0.2rem rgba(0, 191, 166, 0.15) !important;
+    }
+</style>
+<div class="container-fluid settings-section">
+    <div class="page-header text-center">
+        <h1 class="page-title mb-2">Settings</h1>
+        <p class="page-subtitle">Manage your account preferences and settings</p>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Notifications Settings -->
+            <div class="card settings-card">
+                <div class="setting-section-title">
+                    <i class="fa fa-bell"></i>Notification Settings
+                </div>
+                <div class="card-body p-0">
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">📧 Email Notifications</div>
+                            <div class="setting-description">Receive updates via email</div>
+                        </div>
+                        <div class="toggle-switch active" id="emailToggle">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">🔔 Push Notifications</div>
+                            <div class="setting-description">Receive browser notifications</div>
+                        </div>
+                        <div class="toggle-switch" id="pushToggle">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">💬 SMS Alerts</div>
+                            <div class="setting-description">Get important alerts via SMS</div>
+                        </div>
+                        <div class="toggle-switch" id="smsToggle">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Appearance Settings -->
+            <div class="card settings-card">
+                <div class="setting-section-title">
+                    <i class="fa fa-palette"></i>Appearance
+                </div>
+                <div class="card-body p-0">
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">🌙 Dark Mode</div>
+                            <div class="setting-description">Switch to dark theme</div>
+                        </div>
+                        <div class="toggle-switch" id="darkToggle">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">📊 Compact View</div>
+                            <div class="setting-description">Display compact interface</div>
+                        </div>
+                        <div class="toggle-switch active" id="compactToggle">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <div class="setting-label">🎨 Color Theme</div>
+                            <div class="setting-description">Choose your preferred theme</div>
+                        </div>
+                        <select class="form-control" style="border-radius: 10px; width: 180px;">
+                            <option>Classic</option>
+                            <option selected>Modern</option>
+                            <option>Minimal</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.querySelectorAll('.toggle-switch').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+    });
+</script>
+{% endblock %}

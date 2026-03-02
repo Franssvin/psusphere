@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}My Balance - PSUSphere{% endblock %}
+{% block content %}
+<style>
+    .balance-section {
+        padding: 30px 0;
+    }
+    .balance-card {
+        background: var(--primary-gradient);
+        color: white;
+        border-radius: 15px;
+        padding: 50px 30px;
+        box-shadow: 0 12px 35px rgba(0, 191, 166, 0.25);
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+    .balance-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+    }
+    .balance-amount {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin: 30px 0;
+        position: relative;
+        z-index: 1;
+    }
+    .balance-label {
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        opacity: 0.95;
+        font-weight: 600;
+        position: relative;
+        z-index: 1;
+    }
+    .action-btn {
+        border-radius: 25px;
+        padding: 12px 35px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin: 0 10px;
+    }
+</style>
+<div class="container-fluid balance-section">
+    <div class="page-header text-center">
+        <h1 class="page-title mb-2">My Balance</h1>
+        <p class="page-subtitle">View and manage your account funds</p>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+            <div class="balance-card">
+                <div class="balance-label">💰 Current Balance</div>
+                <div class="balance-amount">$0.00</div>
+                <small style="opacity: 0.9; font-size: 0.95rem;">As of today</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

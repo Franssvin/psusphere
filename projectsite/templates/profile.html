@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}My Profile - PSUSphere{% endblock %}
+{% block content %}
+<style>
+    .profile-section {
+        padding: 30px 0;
+    }
+    .profile-avatar {
+        width: 140px;
+        height: 140px;
+        border: 5px solid white;
+        box-shadow: 0 6px 20px rgba(0, 191, 166, 0.3);
+    }
+    .profile-info-card {
+        background: white;
+        border-left: 5px solid var(--primary-color);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+    .profile-info-card:hover {
+        box-shadow: 0 8px 25px rgba(0, 191, 166, 0.15);
+        transform: translateY(-2px);
+    }
+    .profile-label {
+        font-weight: 700;
+        color: var(--primary-color);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+    .profile-value {
+        color: #333;
+        font-size: 1.15rem;
+        font-weight: 500;
+    }
+    .quick-actions-card {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        background: white;
+        position: sticky;
+        top: 20px;
+    }
+    .quick-actions-card .card-header {
+        background: var(--primary-gradient);
+        color: white;
+        border-radius: 12px 12px 0 0;
+        font-weight: 700;
+        border: none;
+    }
+    .btn-action {
+        border-radius: 10px;
+        border: none;
+        padding: 12px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-bottom: 10px;
+    }
+    .btn-action-primary {
+        background: var(--primary-gradient);
+        color: white;
+    }
+    .btn-action-primary:hover {
+        background: var(--primary-gradient);
+        opacity: 0.9;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 191, 166, 0.3);
+    }
+    .btn-action-outline {
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+    }
+    .btn-action-outline:hover {
+        background: #e0f7fa;
+        color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+    .edit-btn {
+        border-radius: 25px !important;
+        padding: 12px 40px !important;
+        background: var(--primary-gradient) !important;
+        color: white !important;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    .edit-btn:hover {
+        background: var(--primary-gradient) !important;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 191, 166, 0.3) !important;
+    }
+</style>
+<div class="container-fluid profile-section">
+    <div class="page-header text-center">
+        <div class="mb-4">
+            <img src="{% static 'img/Admin.jpg' %}" class="img-fluid rounded-circle profile-avatar" alt="Profile Picture">
+        </div>
+        <h1 class="page-title mb-2">{{ request.user.get_full_name|default:request.user.username }}</h1>
+        <p class="page-subtitle">Administrator Profile</p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="profile-info-card">
+                <div class="profile-label">📧 Email Address</div>
+                <div class="profile-value">{{ request.user.email }}</div>
+            </div>
+            <div class="profile-info-card">
+                <div class="profile-label">👔 Role</div>
+                <div class="profile-value">{{ request.user.profile.role|default:'Administrator' }}</div>
+            </div>
+            <div class="profile-info-card">
+                <div class="profile-label">ℹ️ About Me</div>
+                <div class="profile-value">Welcome to PSUSphere! This is your personal space within the system where you can manage organizations, colleges, and student information.</div>
+            </div>
+            <div class="mt-4">
+                <a href="{% url 'edit-profile' %}" class="btn edit-btn">
+                    <i class="fa fa-edit mr-2"></i>Edit Profile
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card quick-actions-card">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'balance' %}" class="btn btn-action btn-action-primary w-100">
+                        <i class="fa fa-wallet mr-2"></i>View Balance
+                    </a>
+                    <a href="{% url 'inbox' %}" class="btn btn-action btn-action-primary w-100">
+                        <i class="fa fa-inbox mr-2"></i>Check Inbox
+                    </a>
+                    <a href="{% url 'settings' %}" class="btn btn-action btn-action-primary w-100">
+                        <i class="fa fa-cog mr-2"></i>Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

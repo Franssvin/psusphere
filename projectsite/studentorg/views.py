@@ -190,6 +190,15 @@ class HomePageView(ListView):
     template_name = "index.html"
 
 
+def notifications(request):
+    # simple placeholder notifications list
+    notifications = [
+        {'title': 'New user registered', 'time': '5 minutes ago'},
+        {'title': 'System maintenance scheduled', 'time': '1 hour ago'},
+    ]
+    return render(request, 'notifications.html', {'notifications': notifications})
+
+
 def index(request):
     # Top 5 Organizations by Number of Members
     org_members_counts = OrgMember.objects.values('organization__name').annotate(num_students=Count('student')).order_by('-num_students')[:5]
@@ -200,7 +209,8 @@ def index(request):
     top_colleges = Program.objects.values(college_name=F('college__college_name')).annotate(program_count=Count('prog_name')).order_by('-program_count')[:5]
     colleges = []
     for college in top_colleges:
-        college_name = college['college_name']
+        college_name = college.get('college_name') or 'Unassigned'
+        # map well-known colleges to short aliases, otherwise use the full name
         if college_name == 'College of Sciences':
             colleges.append('CS')
         elif college_name == 'College of Teacher Education':
@@ -211,6 +221,8 @@ def index(request):
             colleges.append('CBA')
         elif college_name == 'College of Engineering Architecture and Technology':
             colleges.append('CEAT')
+        else:
+            colleges.append(college_name)
     num_programs = [college['program_count'] for college in top_colleges]
 
     # Top 5 Programs by Number of Students
@@ -220,7 +232,8 @@ def index(request):
 
     # Number of Organizations per College
     organizations_per_college = Organization.objects.values('college__college_name').annotate(num_organizations=Count('id'))
-    college_names = [entry['college__college_name'] for entry in organizations_per_college]
+    # ensure no None labels and keep consistent ordering
+    college_names = [(entry.get('college__college_name') or 'Unassigned') for entry in organizations_per_college]
     num_organizations = [entry['num_organizations'] for entry in organizations_per_college]
 
     # Programs with the Least Number of Students
@@ -259,6 +272,12 @@ def index(request):
     student_counts = [Student.objects.filter(program__college=college).count() for college in all_colleges]
 
 
+    # additional summary counts for small cards
+    total_orgs = Organization.objects.count()
+    total_students = Student.objects.count()
+    total_colleges = College.objects.count()
+    total_programs = Program.objects.count()
+
     context = {
         'labels': labels, 'data': data,
         'colleges': colleges, 'num_programs': num_programs,
@@ -266,6 +285,42 @@ def index(request):
         'college_names': college_names, 'num_organizations': num_organizations,
         'programx': programx, 'less_students': less_students,
         'all_college_names': all_college_names, 'student_counts': student_counts,
+        'total_orgs': total_orgs,
+        'total_students': total_students,
+        'total_colleges': total_colleges,
+        'total_programs': total_programs,
     }
 
     return render(request, 'index.html', context)
+
+
+# user dashboard sections
+
+def profile(request):
+    # display basic user profile information
+    return render(request, 'profile.html')
+
+
+def balance(request):
+    # simple placeholder balance
+    return render(request, 'balance.html')
+
+
+def inbox(request):
+    # dummy inbox messages
+    messages = [
+        {'sender': 'Admin', 'subject': 'Welcome', 'date': '2026-03-02', 'body': 'Welcome to PSUSphere!'},
+        {'sender': 'Support', 'subject': 'Account update', 'date': '2026-02-28', 'body': 'Your profile has been updated.'},
+        {'sender': 'Team', 'subject': 'Meeting Reminder', 'date': '2026-02-25', 'body': 'Don\'t forget our team meeting tomorrow.'},
+    ]
+    return render(request, 'inbox.html', {'messages': messages})
+
+
+def edit_profile(request):
+    # form to edit user details (not functional)
+    return render(request, 'edit_profile.html')
+
+
+def settings(request):
+    # account/settings toggles
+    return render(request, 'settings.html')
